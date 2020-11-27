@@ -1,0 +1,9 @@
+bin/
+obj/
+/packages/
+riderModule.iml
+/_ReSharper.Caches/
+/.idea/.idea.graphics-lab-six/.idea/misc.xml
+/.idea/.idea.graphics-lab-six/.idea/vcs.xml
+/Form1.resx
+/.idea/.idea.graphics-lab-six/.idea/indexLayout.xml
