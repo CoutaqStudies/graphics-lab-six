@@ -13,6 +13,7 @@ namespace graphics_lab_six
 {
     public partial class Form1 : Form
     {
+        Graphics g; 
         public Form1()
         {
             InitializeComponent();
@@ -24,9 +25,27 @@ namespace graphics_lab_six
         }
         private void pictureBox1_Paint(object sender, PaintEventArgs e)
         {
+            g = e.Graphics;
+            g.SmoothingMode = SmoothingMode.HighQuality;
+            g.InterpolationMode = InterpolationMode.HighQualityBicubic;
+            g.CompositingQuality = CompositingQuality.HighQuality;
+            drawPicture(g);
+        }
+        private void pictureBox1_SizeChanged(object sender, EventArgs e)
+        {
+            g = pictureBox1.CreateGraphics();
+            g.SmoothingMode = SmoothingMode.HighQuality;
+            g.InterpolationMode = InterpolationMode.HighQualityBicubic;
+            g.CompositingQuality = CompositingQuality.HighQuality;
+            drawPicture(g);
+        }
+        
+        private void drawPicture(Graphics g)
+        {
+            g.Clear(Color.SkyBlue);
             var width = pictureBox1.Size.Width;
             var height = pictureBox1.Size.Height;
-            var g = e.Graphics;
+            
             PointF[] grassBezier =
             {
                 new PointF(0, height/2),
@@ -58,7 +77,7 @@ namespace graphics_lab_six
         private void drawTree(PointF location, Graphics g, float trunkCurve = 0.4f, int trunkWidth = 50, int innerTrunkWidth = 30, int lowerTrunkHeight = 50, int totalTrunkHeight = 130)
         {
             float x = location.X;
-            float y = location.Y;
+            float y = location.Y-20;
             var trunkPen = new Pen(Color.SaddleBrown, 1.5f);
             //lower trunk
             PointF[] leftTrunk =
@@ -98,9 +117,9 @@ namespace graphics_lab_six
             SizeF circle1 = new SizeF(75, 50);
             SizeF circle2 = new SizeF(75, 50);
 
-            g.FillEllipse(Brushes.DarkGreen, x-circle.Width/2, y-totalTrunkHeight-circle.Height, circle.Width, circle.Height);
-            g.FillEllipse(Brushes.DarkGreen, x-circle1.Width/2-30, y-totalTrunkHeight-circle1.Height, circle1.Width, circle1.Height);
-            g.FillEllipse(Brushes.DarkGreen, x-circle2.Width/2+20, y-totalTrunkHeight-circle2.Height-7, circle2.Width, circle2.Height);
+            g.FillEllipse(Brushes.GreenYellow, x-circle.Width/2, y-totalTrunkHeight-circle.Height, circle.Width, circle.Height);
+            g.FillEllipse(Brushes.GreenYellow, x-circle1.Width/2-30, y-totalTrunkHeight-circle1.Height, circle1.Width, circle1.Height);
+            g.FillEllipse(Brushes.GreenYellow, x-circle2.Width/2+20, y-totalTrunkHeight-circle2.Height-7, circle2.Width, circle2.Height);
 
             drawBird(new PointF(30, 50), g);
         }
@@ -139,14 +158,42 @@ namespace graphics_lab_six
             Bitmap bitmap = new Bitmap(this.pictureBox1.Size.Width, this.pictureBox1.Size.Height);
             var gBmp = Graphics.FromImage(bitmap);
             // gBmp.DrawPath(myPen, bird);
-            gBmp.TranslateTransform(100.0F, 0.0F);
+            gBmp.TranslateTransform(400f, 150.0F);
 
             gBmp.FillEllipse(Brushes.Honeydew, 0f*sizeMultiplier, 6.5f*sizeMultiplier, 8.5f*sizeMultiplier, 4.5f*sizeMultiplier);
-            gBmp.TranslateTransform(1.0F, 0.0F);
-            gBmp.FillEllipse(Brushes.Black, 1f*sizeMultiplier, 4.5f*sizeMultiplier, 1*sizeMultiplier, 1*sizeMultiplier);
+            
+          
 
             gBmp.RotateTransform(40f, 0f);
             gBmp.FillEllipse(Brushes.Honeydew, 3f*sizeMultiplier, 2*sizeMultiplier, 7*sizeMultiplier, 5*sizeMultiplier);
+
+            gBmp.FillEllipse(Brushes.Black, 3.2f * sizeMultiplier, 4f * sizeMultiplier, 1 * sizeMultiplier, 1 * sizeMultiplier);
+
+            gBmp.RotateTransform(-40f, 0f);
+            gBmp.TranslateTransform(70.5F, 70.5F);
+            gBmp.ScaleTransform(0.5f, 0.5f);
+            PointF[] wing =
+            {
+                new PointF(1.5f*sizeMultiplier, 1.5f*sizeMultiplier),
+                new PointF(5f*sizeMultiplier, 1.1f*sizeMultiplier),
+                new PointF(1f*sizeMultiplier, 6f*sizeMultiplier),
+              
+            };
+
+            gBmp.FillPolygon(Brushes.Honeydew, wing);
+
+
+            gBmp.TranslateTransform(-200F, -45F);
+            gBmp.ScaleTransform(1.5f, 1.5f);
+            PointF[] beak =
+            {
+                new PointF(0.5f*sizeMultiplier, 1f*sizeMultiplier),
+                new PointF(3.2f*sizeMultiplier, 0.7f*sizeMultiplier),
+                new PointF(2.7f*sizeMultiplier, 2f*sizeMultiplier),
+
+            };
+
+            gBmp.FillPolygon(Brushes.Yellow, beak);
 
 
             //pictureBox1.Image = bitmap;
